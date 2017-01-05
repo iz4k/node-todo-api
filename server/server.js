@@ -16,18 +16,15 @@ const port = process.env.PORT;
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
-  console.log(req.body);
 
   var todo = new Todo({
     text: req.body.text
   });
 
   todo.save().then((doc) => {
-    console.log('Saving todo', doc);
     res.send(doc);
   }, (e) => {
     res.status(400).send(e);
-    console.log('Unable to save todo', e);
   })
 });
 
@@ -36,7 +33,6 @@ app.get('/todos', (req, res) => {
     res.send({todos});
   }, (e) => {
     res.status(400).send(e);
-    console.log('Could not find todos', e);
   });
 });
 
@@ -52,7 +48,6 @@ app.get('/todos/:id', (req, res) => {
     res.send({todo})
   }, (e) => {
     res.status(400).send(e);
-    console.log('Could not find todo with id', id);
   });
 });
 
@@ -68,7 +63,6 @@ app.delete('/todos/:id', (req, res) => {
     res.send({todo})
   }, (e) => {
     res.status(400).send(e);
-    console.log('Could not find todo with id', id);
   });
 })
 
