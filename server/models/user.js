@@ -50,6 +50,30 @@ UserSchema.methods.generateAuthToken = function() {
     return token;
   });
 };
+/*
+!OBS
+instance methods (.methods) get called with the individual document (one user)
+model methods (.statics) get called with the model document (User schema)
+ */
+UserSchema.statics.findByToken = function(token) {
+  var User = this;
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, '123abc');
+  } catch (e) {
+    // return new Promise((resolve, reject) => {
+    //   reject();
+    // });
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    '_id': decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+};
 
 var User = mongoose.model('User', UserSchema);
 
